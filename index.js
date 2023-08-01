@@ -11,7 +11,8 @@ const userRouter = require("./src/api/routes/user.routes");
 
 // Validacion y cors
 const {isAuth} = require("./src/middlewares/auth")
-const cors = require("cors")
+const cors = require("cors");
+const clientesRouter = require('./src/api/routes/clientes.routes.js');
 
 //configuramos cloudinary
 const cloudinary = require('cloudinary').v2;
@@ -53,6 +54,7 @@ app.use((req, res, next) => {
   
   // configuramos el servidor con las rutas correspondientes
   app.use("/user", userRouter);
+  app.use("/cliente", clientesRouter);
 
   //   app.use("*", (req, res) => {console.log('otra ruta', req)})
   
