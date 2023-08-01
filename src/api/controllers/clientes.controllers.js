@@ -14,6 +14,22 @@ const getCliente = async(req, res) => {
     }
 }
 
+const getClientebyId = async (req, res) =>  {
+    try {
+       const {id} = req.params;
+       const idCliente = await Clientes.findById(id);
+
+       if (!idCliente){
+          return res.status(404).json({message: 'El Id informado no esta asociado a ningun cliente'}); 
+       }
+
+       return res.status(200).json(idCliente) ;
+    } catch (error) {
+       return res.status(500).json(error) ;
+    }
+    // res.send('listado movies')
+};
+
 //GET PAGINADO
 const getClientesPaginado = async(req,res) => {
     try {
@@ -128,4 +144,4 @@ const deleteCliente = async(req, res) => {
 
 
 
-module.exports = {getClientesPaginado, getCliente, postCliente, putCliente, deleteCliente }
+module.exports = {getClientesPaginado, getCliente, getClientebyId, postCliente, putCliente, deleteCliente }

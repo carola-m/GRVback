@@ -1,12 +1,13 @@
 const express = require("express");
 
-const {getClientesPaginado, getCliente, postCliente, putCliente, deleteCliente } = require("../controllers/clientes.controllers");
+const {getClientesPaginado, getCliente, getClientebyId, postCliente, putCliente, deleteCliente } = require("../controllers/clientes.controllers");
 
 const {isAuth, isAdmin} = require("../../middlewares/auth");
 
 const clientesRouter = express.Router();
 
 clientesRouter.get("/pagina", [isAuth], getClientesPaginado)
+clientesRouter.get("/:id", [isAuth], getClientebyId)
 clientesRouter.get("/", [isAuth], getCliente)
 
 clientesRouter.post('/', [isAdmin], postCliente)
