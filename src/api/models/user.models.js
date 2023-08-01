@@ -8,6 +8,7 @@ const userSchema = new Schema(
         email: {type:String, require:true},
         password: {type:String, require:true},
         updatedPW: {type:Boolean},
+        idcliente: {type:String, default:"00000"},
         role: {type:String, default:"user", enum:["admin", "user"]}
 },{
    timestamps: true 
