@@ -1,6 +1,8 @@
 const Clientes = require ("../models/clientes.models")
 const User = require ("../models/user.models")
 const bcrypt = require("bcrypt")
+const randomstring = require("randomstring");
+const { enviarMail } = require('../../utils/sendmail');
 
 const getCliente = async(req, res) => {
     try {
@@ -76,7 +78,10 @@ const postCliente = async(req, res) => {
        const createdCliente = await newCliente.save()
 
        //grabo el dato asociado a user-login
-       let newpassword = 'pepe1234%&$'
+       //let newpassword = 'pepe1234%&$'
+       let newPassword = randomstring.generate(8);
+
+    //    console.log(newPassword);
 
        let userTmp = {};
        userTmp = {name:createdCliente.name}
@@ -84,14 +89,16 @@ const postCliente = async(req, res) => {
        userTmp = {...userTmp, email:createdCliente.email}
 
        //Encriptar password
-       newpassword = bcrypt.hashSync(newpassword, 10)     
+       let newPasswordEnc = bcrypt.hashSync(newPassword, 10)     
 
-       userTmp = {...userTmp, password:newpassword}
+       userTmp = {...userTmp, password:newPasswordEnc}
        userTmp = {...userTmp, updatedPW:true}
        userTmp = {...userTmp, idcliente:createdCliente._id}
 
        const newUser = new User(userTmp)
        const createdUser = await newUser.save()
+
+       enviarMail(createdCliente.email, newPassword);
 
        // No ha habido errores.
        return res.status(201).json(createdCliente);
